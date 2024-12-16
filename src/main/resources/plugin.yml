@@ -1,0 +1,6 @@
+name: Rift
+version: '1.0'
+main: me.mehdidev.rift.Rift
+api-version: '1.8.9'
+load: STARTUP
+authors: [ Autophobic ]
