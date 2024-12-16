@@ -5,6 +5,7 @@ import me.mehdidev.rift.commands.CommandRegistry;
 import me.mehdidev.rift.commands.CommandRift;
 import me.mehdidev.rift.items.core.ItemListener;
 import me.mehdidev.rift.listeners.InventoryListener;
+import me.mehdidev.rift.listeners.WorldListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,6 +62,7 @@ public final class Rift extends JavaPlugin {
 
     private void handleListeners() {
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(), this);
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
     }
 

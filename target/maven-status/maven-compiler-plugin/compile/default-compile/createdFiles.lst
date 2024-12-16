@@ -32,6 +32,7 @@ me\mehdidev\rift\commands\CommandRift.class
 me\mehdidev\rift\guis\GuiParams.class
 me\mehdidev\rift\commands\CommandRegistry.class
 me\mehdidev\rift\items\core\AbilityActivation.class
+me\mehdidev\rift\listeners\WorldListener.class
 me\mehdidev\rift\items\impl\misc\MaddoxBadphone.class
 me\mehdidev\rift\items\core\RestrictionType.class
 me\mehdidev\rift\items\core\MaterialStatistics.class
