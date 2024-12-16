@@ -1,10 +1,10 @@
 package me.mehdidev.rift.items.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.mehdidev.rift.handlers.ItemUtils;
 import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemLore
 {
@@ -23,9 +23,9 @@ public class ItemLore
 
         if (statistics instanceof SwordStatistic) {
             lore.add(ChatColor.GRAY + "Rift Damage: " + ChatColor.GREEN + "+" + ((SwordStatistic) statistics).getRiftDamage());
+            lore.add(ChatColor.GRAY + "");
         }
 
-        lore.add(ChatColor.GRAY + " ");
         if (ability != null)
         {
             StringBuilder abilityTitle = new StringBuilder()
@@ -53,7 +53,7 @@ public class ItemLore
        		}
         }
         
-        lore.add("" + statistics.getRarity().getRarityColor() + ChatColor.BOLD + statistics.getRarity().name() + " " + parent.getType().getStatistics().getSpecificType().name());
+        lore.add("" + statistics.getRarity().getRarityColor() + ChatColor.BOLD + statistics.getRarity().name() + (statistics.getSpecificType().name().equalsIgnoreCase("NONE") ? "" : " " + parent.getType().getStatistics().getSpecificType().name()));
         return lore;
     }
 

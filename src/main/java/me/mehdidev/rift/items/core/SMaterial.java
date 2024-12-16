@@ -1,19 +1,19 @@
 package me.mehdidev.rift.items.core;
 
+import me.mehdidev.rift.handlers.ItemUtils;
+import me.mehdidev.rift.items.impl.misc.MaddoxBadphone;
+import me.mehdidev.rift.items.impl.swords.WyldSword;
+import org.bukkit.Material;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import me.mehdidev.rift.handlers.ItemUtils;
-import me.mehdidev.rift.items.impl.swords.DetectiveScanner;
-import me.mehdidev.rift.items.impl.swords.WyldSword;
-import org.bukkit.Material;
 
 public enum SMaterial
 {
 	
 	WYLD_SWORD(Material.WOOD_SWORD, WyldSword.class),
-    DETECTIVE_SCANNER(Material.SKULL_ITEM, DetectiveScanner.class)
+    MADDOX_BADPHONE(Material.SKULL_ITEM, MaddoxBadphone.class)
     ;
 	
     private final Material craftMaterial;

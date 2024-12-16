@@ -7,7 +7,6 @@ import me.mehdidev.rift.items.core.ItemListener;
 import me.mehdidev.rift.listeners.InventoryListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -26,6 +25,11 @@ public final class Rift extends JavaPlugin {
     * Simple stats system (HP/Mana/) [NOT DONE]
     * implement a world instancing system with the rift map (hypixel dont sue me) [NOT DONE]
     * VAMPIRE SLAYER? [OH BOY]
+    *
+    *
+    * ADD A SIMPLE WORLD MANAGER
+    * IMPLEMENT NPCS
+    * IMPORTANT: MAKE A SIMPLE VAMPIRE SLAYER GUI
     * */
 
 

@@ -1,15 +1,11 @@
 package me.mehdidev.rift.items.core;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import me.mehdidev.rift.handlers.ItemUtils;
 import me.mehdidev.rift.handlers.SerialNBTTagCompound;
+import net.minecraft.server.v1_8_R3.Item;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -18,12 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-
-import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.Item;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class SItem implements Cloneable, ConfigurationSerializable
 {
@@ -234,7 +226,7 @@ public class SItem implements Cloneable, ConfigurationSerializable
                 statistics instanceof SkullStatistics)
         {
             stack.setDurability((short) 3);
-            stack = ItemUtils.getSkull(((SkullStatistics)statistics).getURL(), stack);
+            stack = ItemUtils.getSkull(((SkullStatistics)statistics).getURL(), stack, specMaterial);
         }
         return new SItem(specMaterial, variant, stack, origin,
                 specMaterial.getItemData() != null ? specMaterial.getItemData().getData() : new NBTTagCompound(),

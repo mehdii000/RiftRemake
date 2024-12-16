@@ -1,25 +1,19 @@
 package me.mehdidev.rift.handlers;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import me.mehdidev.rift.Rift;
 import me.mehdidev.rift.guis.AbstractGui;
 import me.mehdidev.rift.guis.RiftGuis;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class User
 {
@@ -111,5 +105,9 @@ public class User
 
     public Player getPlayer() {
         return Bukkit.getPlayer(getUuid());
+    }
+
+    public void ding() {
+        getPlayer().playSound(getPlayer().getLocation(), Sound.ORB_PICKUP, 2f, 1f);
     }
 }

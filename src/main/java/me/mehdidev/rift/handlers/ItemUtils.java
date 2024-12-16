@@ -14,10 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -93,14 +90,11 @@ public class ItemUtils {
         return nmsStack.getName();
     }
 
-    public static ItemStack getSkull(String texture, ItemStack stack)
+    public static ItemStack getSkull(String texture, ItemStack stack, SMaterial material)
     {
         SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        String stringUUID;
-        stringUUID = UUID.randomUUID().toString();
-        GameProfile profile = new GameProfile(UUID.fromString(stringUUID), null);
-        byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
-        profile.getProperties().put("textures", new Property("textures", new String(ed)));
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        profile.getProperties().put("textures", new Property("textures", texture));
         Field f;
         try
         {
@@ -131,7 +125,7 @@ public class ItemUtils {
             AbilityActivation activation = ability.getAbilityActivation();
             if (activation != AbilityActivation.NO_ACTIVATION)
             {
-            	ability.onAbilityUse(player, sItem);
+            	ability.onAbilityUse(User.getUser(player.getUniqueId()), sItem);
             }
         }
     }

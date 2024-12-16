@@ -8,6 +8,7 @@ me\mehdidev\rift\items\core\Rarity.class
 me\mehdidev\rift\items\core\SwordStatistic.class
 me\mehdidev\rift\items\core\Stackable.class
 me\mehdidev\rift\items\core\LoreBuilder.class
+me\mehdidev\rift\items\core\Restriction.class
 me\mehdidev\rift\commands\BaseCommand.class
 me\mehdidev\rift\guis\AbstractGui$SlotKey.class
 me\mehdidev\rift\items\core\ItemOrigin.class
@@ -27,11 +28,12 @@ me\mehdidev\rift\items\core\InventoryTranslatedAction.class
 me\mehdidev\rift\items\impl\swords\WyldSword.class
 me\mehdidev\rift\items\core\SMaterial.class
 me\mehdidev\rift\guis\impl\GuiRift.class
-me\mehdidev\rift\items\impl\swords\DetectiveScanner.class
 me\mehdidev\rift\commands\CommandRift.class
 me\mehdidev\rift\guis\GuiParams.class
 me\mehdidev\rift\commands\CommandRegistry.class
 me\mehdidev\rift\items\core\AbilityActivation.class
+me\mehdidev\rift\items\impl\misc\MaddoxBadphone.class
+me\mehdidev\rift\items\core\RestrictionType.class
 me\mehdidev\rift\items\core\MaterialStatistics.class
 me\mehdidev\rift\guis\GuiSlot.class
 me\mehdidev\rift\items\core\SkullStatistics.class
