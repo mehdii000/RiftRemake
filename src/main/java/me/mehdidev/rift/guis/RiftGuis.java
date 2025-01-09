@@ -1,16 +1,16 @@
 package me.mehdidev.rift.guis;
 
+import me.mehdidev.rift.guis.impl.GuiItemBrowser;
 import me.mehdidev.rift.guis.impl.GuiRift;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import me.mehdidev.rift.guis.impl.GuiRiftGuideDetailed;
 
-import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum RiftGuis {
-    RIFT_GUI("Rift Guide", GuiRift.class);
+    RIFT_GUIDE("Rift Guide", GuiRift.class),
+    RIFT_GUIDE_DETAILED("Rift Guide - Details", GuiRiftGuideDetailed.class),
+    ITEM_BROWSER("Item Browser",GuiItemBrowser.class);
 
     public static ConcurrentHashMap<UUID, AbstractGui> lastOpenedInvetories = new ConcurrentHashMap<>();
 
@@ -24,19 +24,10 @@ public enum RiftGuis {
 
     public static AbstractGui getFromInventory(UUID playerUUID) {
         if (lastOpenedInvetories.containsKey(playerUUID)) {
+            if (lastOpenedInvetories.get(playerUUID) == null) return null;
             return lastOpenedInvetories.get(playerUUID);
         }
         return null;
-    }
-
-    public void openForPlayer(Player player) {
-        try {
-            AbstractGui gui = (AbstractGui) clazz.newInstance();
-            lastOpenedInvetories.put(player.getUniqueId(), gui);
-            player.openInventory(gui.getInventory());
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public String getTitle() {

@@ -1,7 +1,6 @@
 package me.mehdidev.rift.guis;
 
 import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,7 +12,7 @@ public class GuiSlot {
     private final int y;
     private final AbstractGui parentGui;
     private boolean locked;
-    private Consumer<GuiSlot> slotConsumer = null;
+    private Consumer<GuiSlot> clickConsumer = null;
 
     public GuiSlot(int x, int y, AbstractGui parent) {
         this.x = x;
@@ -30,12 +29,18 @@ public class GuiSlot {
         return locked;
     }
 
-    public void fill(Material material, String name) {
+    public GuiSlot fill(Material material, String name) {
         ItemStack stack = new ItemStack(material);
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(name);
         stack.setItemMeta(meta);
-        getParentGui().getInventory().setItem((9*getY())+getX(), stack);
+        getParentGui().getInventory().setItem(getSlot(), stack);
+        return this;
+    }
+
+    public GuiSlot fill(ItemStack stack) {
+        getParentGui().getInventory().setItem(getSlot(), stack);
+        return this;
     }
 
     public int getX() {
@@ -50,9 +55,31 @@ public class GuiSlot {
         return parentGui;
     }
 
-    public void onClick(InventoryClickEvent event) {}
+    public void onClick(Consumer<GuiSlot> consumer) {
+        this.clickConsumer = consumer;
+    }
 
     public Material getType() {
-        return getParentGui().getInventory().getItem((9*getY())+getX()).getType();
+        return getItemStack().getType();
+    }
+
+    public void colorify(short i) {
+        ItemStack stack = getItemStack();
+        stack.setDurability(i);
+        getParentGui().getInventory().setItem(getSlot(), stack);
+    }
+
+    public int getSlot() {
+        return (9*getY())+getX();
+    }
+
+    public ItemStack getItemStack() {
+        return getParentGui().getInventory().getItem(getSlot());
+    }
+
+    public boolean hasClickConsumerThenRun() {
+        if (clickConsumer == null) return false;
+        clickConsumer.accept(this);
+        return true;
     }
 }

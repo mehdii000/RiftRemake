@@ -7,9 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractCommand extends Command {
+public abstract class AbstractCommand extends Command implements Autocompletion {
 
     /*This is just a placeholder, doesn't actually register under this command name*/
     protected AbstractCommand() {
@@ -42,4 +43,12 @@ public abstract class AbstractCommand extends Command {
         user.send(ChatColor.GRAY + "Usage: /" + ChatColor.AQUA + getName() + ChatColor.GRAY + " " + getUsage());
     }
 
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        int maxArgs = getClass().getAnnotation(BaseCommand.class).getMaxArguments();
+        if (args.length >= maxArgs) {
+            if (mapArgumentToCompletion().containsKey(args.length)) return mapArgumentToCompletion().get(args.length);
+        }
+        return Collections.singletonList("");
+    }
 }

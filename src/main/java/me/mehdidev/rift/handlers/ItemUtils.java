@@ -106,7 +106,12 @@ public class ItemUtils {
         stack.setItemMeta(meta);
         return stack;
     }
-	
+
+    public static ItemStack getSkull(String texture) {
+        ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        return getSkull(texture, stack, null);
+    }
+
 	public static List<String> splitByWordAndLength(String string, int splitLength, String separator)
     {
         List<String> result = new ArrayList<>();
@@ -116,6 +121,40 @@ public class ItemUtils {
             result.add(matcher.group(1));
         return result;
     }
+
+    public static List<String> splitStringLength(String input, int length) {
+        List<String> result = new ArrayList<>();
+
+        if (input == null || length <= 0) {
+            throw new IllegalArgumentException("Input string cannot be null and length must be greater than 0.");
+        }
+
+        int start = 0;
+
+        while (start < input.length()) {
+            int end = Math.min(start + length, input.length());
+
+            // Adjust 'end' to avoid breaking words
+            if (end < input.length() && input.charAt(end) != ' ') {
+                int lastSpace = input.lastIndexOf(' ', end);
+                if (lastSpace > start) {
+                    end = lastSpace;
+                }
+            }
+
+            // Extract substring and trim it to avoid unnecessary spaces
+            String substring = input.substring(start, end).trim();
+            if (!substring.isEmpty()) {
+                result.add(substring);
+            }
+
+            // Move 'start' to the next word
+            start = end + 1;
+        }
+
+        return result;
+    }
+
 	
 	public static void useAbility(Player player, SItem sItem)
     {

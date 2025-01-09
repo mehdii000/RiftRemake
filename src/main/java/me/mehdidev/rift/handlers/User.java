@@ -1,8 +1,11 @@
 package me.mehdidev.rift.handlers;
 
 import me.mehdidev.rift.Rift;
+import me.mehdidev.rift.areas.RiftTasks;
 import me.mehdidev.rift.guis.AbstractGui;
 import me.mehdidev.rift.guis.RiftGuis;
+import me.mehdidev.rift.stats.RiftStat;
+import me.mehdidev.rift.stats.StatModifier;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -10,10 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class User
 {
@@ -26,9 +26,14 @@ public class User
     private UUID uuid;
     private final Config config;
 
+    private List<String> completedTasks;
+    private List<StatModifier> activeStatModifiers;
+
     private User(UUID uuid)
     {
         this.uuid = uuid;
+        this.completedTasks = new ArrayList<>();
+        this.activeStatModifiers = new ArrayList<>();
 
         if (!USER_FOLDER.exists()) USER_FOLDER.mkdirs();
         String path = uuid.toString() + ".yml";
@@ -55,25 +60,24 @@ public class User
     public void load()
     {
         this.uuid = UUID.fromString(config.getString("uuid"));
+        this.completedTasks = config.getStringList("completedTasks");
+        this.activeStatModifiers = ConfigUtils.stringListToList(config.getStringList("activeStatModifiers"), StatModifier.class);
     }
 
     public void save()
     {
         config.set("uuid", uuid.toString());
+        config.set("completedTasks", completedTasks);
+        config.set("activeStatModifiers", ConfigUtils.listToStringList(activeStatModifiers));
         config.save();
     }
 
-    public void openGUI(RiftGuis guiToOpen) {
+    public void openGUI(AbstractGui guiToOpen) {
         Player player = Bukkit.getPlayer(uuid);
-        AbstractGui PREVIOUS = RiftGuis.getFromInventory(uuid);
-        if (PREVIOUS != null && PREVIOUS.isCachable() && PREVIOUS.getGuiType().name().equals(guiToOpen.name())) {
-            debug(ChatColor.GRAY + "found cached inventory: " + ChatColor.YELLOW + guiToOpen.name());
-            RiftGuis.lastOpenedInvetories.put(player.getUniqueId(), PREVIOUS);
-            player.openInventory(PREVIOUS.getInventory());
-        } else if (PREVIOUS == null || !PREVIOUS.isCachable()) {
-            debug(ChatColor.GRAY + "creating inventory: " + ChatColor.AQUA + guiToOpen.name());
-            guiToOpen.openForPlayer(player);
-        }
+        RiftGuis.lastOpenedInvetories.put(player.getUniqueId(), guiToOpen);
+        guiToOpen.build();
+        player.openInventory(guiToOpen.getInventory());
+
     }
 
     public void send(String message)
@@ -81,6 +85,28 @@ public class User
         Player player = Bukkit.getPlayer(uuid);
         if (player == null) return;
         player.sendMessage(message);
+    }
+
+    public void completeTask(RiftTasks task) {
+        if (completedTasks.contains(task.name())) return;
+        completedTasks.add(task.name());
+    }
+
+    public boolean completedTask(String taskID) {
+        return completedTasks.contains(taskID);
+    }
+
+    public void addStatModifier(StatModifier modifer) {
+        this.activeStatModifiers.add(modifer);
+    }
+
+    public void removeStatModifiersWithReason(RiftStat modifierType, StatModifier.ModificationReason reason) {
+        for (int i = activeStatModifiers.size() - 1; i >= 0; i--) {
+            if (activeStatModifiers.get(i).getReason().name().equalsIgnoreCase(reason.name()) &&
+                    modifierType.name().equalsIgnoreCase(activeStatModifiers.get(i).getModifiedStat().name())) {
+                activeStatModifiers.remove(i);
+            }
+        }
     }
 
     public static User getUser(UUID uuid)
@@ -110,4 +136,13 @@ public class User
     public void ding() {
         getPlayer().playSound(getPlayer().getLocation(), Sound.ORB_PICKUP, 2f, 1f);
     }
+
+    public List<StatModifier> getActiveStatModifiers() {
+        return activeStatModifiers;
+    }
+
+    public void updateStats() {
+        Rift.getRift().riftStats.updateStats(this);
+    }
+
 }
